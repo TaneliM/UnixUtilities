@@ -4,14 +4,18 @@ Simple C implementations of existing utilities.
 
 MY-CAT
 A modified version of: https://github.com/TaneliM/ReverseCat
-Prints the constents of all files provided as arguments.
+Prints the contents of all files provided as arguments.
 
 USAGE (my-cat)
-./my-cat (file1.txt) (file2.txt) ... ... (file3.txt)
+./my-cat (file1.txt) (file2.txt) ... ... (fileN.txt)
 
 
 MY-GREP
-wip
+A modified version of my-cat
+Searches files/stdin for a specified string.
+
+USAGE (my-grep)
+./my-grep (keyword) (file1.txt) (file2.txt) ... ... (fileN.txt)
 
 
 MY-ZIP

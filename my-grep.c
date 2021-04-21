@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 
 // List node struct
@@ -57,13 +58,15 @@ int read_lines(struct lines** line, FILE* stream) {
 }
 
 
-// Printing the list
-void print_lines(struct lines * line, FILE * stream) {
+// Printing the matching lines
+void print_lines(struct lines * line, char* keyword, FILE * stream) {
 	struct lines * lp;
 	lp = line;
 	
 	while (lp != NULL) {
-		fprintf(stream, "%s", lp->string);
+		if (strstr(lp->string, keyword)) {
+			fprintf(stream, "%s", lp->string);
+		}
 		lp = lp->next;
 	}
 }
@@ -87,25 +90,42 @@ void delete_lines(struct lines * line) {
 // Handling the arguments
 int main(int argc, char** argv) {
 	struct lines * line = NULL;
-	FILE* pFile;
+	FILE* inputStream = stdin;
 	
-	if (argc > 1) {	
-		// Going through all defined files
-		for (int i = 1; i < argc; i++) {
-			if ((pFile = fopen(argv[i], "r")) == NULL) {
-				fprintf(stdout, "wcat: cannot open file\n");
+	// Not enough arguments
+	if (argc < 2) {
+		fprintf(stdout, "wgrep: searchterm [file ...]\n");
+		exit(1);
+	}
+	
+	// Files specified
+	if (argc > 2) {	
+		for (int i = 2; i < argc; i++) {
+			if (((inputStream = fopen(argv[i], "r")) == NULL) && (argc > 2)) {
+				fprintf(stdout, "wgrep: cannot open file\n");
 				exit(1);
 			}
 			
-			if (read_lines(&line, pFile) == -1) {
+			if (read_lines(&line, inputStream) == -1) {
 				exit(1);
 			}
 			
-			print_lines(line, stdout);
+			print_lines(line, argv[1], stdout);
 			delete_lines(line);
 			
-			fclose(pFile);
+			fclose(inputStream);
 		}
+	}
+	// No file specified
+	else {		
+		if (read_lines(&line, inputStream) == -1) {
+			exit(1);
+		}
+		
+		print_lines(line, argv[1], stdout);
+		delete_lines(line);
+		
+		fclose(inputStream);
 	}
 	return 0;
 }

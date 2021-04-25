@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
 			
 			print_lines(line, stdout);
 			delete_lines(line);
-			
+			line = NULL;
 			fclose(pFile);
 		}
 	}

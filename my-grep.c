@@ -41,7 +41,8 @@ int read_lines(struct lines** line, FILE* stream) {
 				fprintf(stderr, "malloc failed\n");
 				return -1;
 			}
-
+			
+			lp->next->next = lp->next->prev = NULL;
 			lp->next->prev = lp;
 			lp = lp->next;
 		}

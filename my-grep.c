@@ -104,16 +104,18 @@ int main(int argc, char** argv) {
 		for (int i = 2; i < argc; i++) {
 			if (((inputStream = fopen(argv[i], "r")) == NULL) && (argc > 2)) {
 				fprintf(stdout, "wgrep: cannot open file\n");
+				delete_lines(line);
 				exit(1);
 			}
 			
 			if (read_lines(&line, inputStream) == -1) {
+				delete_lines(line);
 				exit(1);
 			}
 			
 			print_lines(line, argv[1], stdout);
 			delete_lines(line);
-			
+			line = NULL;
 			fclose(inputStream);
 		}
 	}
